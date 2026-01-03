@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - CGPA Calculator{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ title }}</h1>
+    <p class="subtitle">{{ semester.name }} - {{ semester.student.name }}</p>
+
+    <div class="grading-scale">
+        <h3>Grading Scale Reference</h3>
+        <div class="scale-grid">
+            <div class="scale-item"><strong>90-100:</strong> 10</div>
+            <div class="scale-item"><strong>80-89:</strong> 9</div>
+            <div class="scale-item"><strong>70-79:</strong> 8</div>
+            <div class="scale-item"><strong>60-69:</strong> 7</div>
+            <div class="scale-item"><strong>50-59:</strong> 6</div>
+            <div class="scale-item"><strong>40-49:</strong> 5</div>
+            <div class="scale-item"><strong>30-39:</strong> 4</div>
+            <div class="scale-item"><strong>0-29:</strong> 0</div>
+        </div>
+    </div>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            {{ form.course_name.label }}
+            {{ form.course_name(class="form-control", placeholder="e.g., Data Structures") }}
+            {% if form.course_name.errors %}
+                <div class="form-error">{{ form.course_name.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.subject_area.label }}
+            {{ form.subject_area(class="form-control") }}
+            {% if form.subject_area.errors %}
+                <div class="form-error">{{ form.subject_area.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.course_code.label }}
+            {{ form.course_code(class="form-control", placeholder="e.g., CS101") }}
+            {% if form.course_code.errors %}
+                <div class="form-error">{{ form.course_code.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.credits.label }}
+            {{ form.credits(class="form-control", placeholder="e.g., 3.0") }}
+            {% if form.credits.errors %}
+                <div class="form-error">{{ form.credits.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.marks.label }}
+            {{ form.marks(class="form-control", placeholder="0-100") }}
+            {% if form.marks.errors %}
+                <div class="form-error">{{ form.marks.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary btn-block") }}
+            <a href="{{ url_for('main.view_semester', id=semester.id) }}" class="btn btn-secondary btn-block" style="margin-top: 10px;">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

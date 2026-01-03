@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}{{ student.name }} - CGPA Calculator{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ student.name }}</h1>
+
+    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+        <p><strong>Student ID:</strong> {{ student.student_id }}</p>
+        {% if student.email %}
+            <p><strong>Email:</strong> {{ student.email }}</p>
+        {% endif %}
+        {% if student.program %}
+            <p><strong>Program:</strong> {{ student.program }}</p>
+        {% endif %}
+        {% if student.year %}
+            <p><strong>Year:</strong> {{ student.year }}</p>
+        {% endif %}
+    </div>
+
+    <div class="results">
+        <h2>Overall CGPA</h2>
+        <div class="cgpa-display">{{ "%.2f"|format(student.overall_cgpa) }}</div>
+    </div>
+
+    <div style="margin: 20px 0;">
+        <a href="{{ url_for('main.create_semester', student_id=student.id) }}" class="btn btn-success">+ Add Semester</a>
+        <a href="{{ url_for('main.edit_student', id=student.id) }}" class="btn btn-secondary">Edit Student</a>
+        <form method="POST" action="{{ url_for('main.delete_student', id=student.id) }}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this student? All semesters and courses will be deleted too.');">
+            <button type="submit" class="btn btn-danger">Delete Student</button>
+        </form>
+        <a href="{{ url_for('main.dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+
+    <h2>Semesters</h2>
+
+    {% if student.semesters.count() > 0 %}
+        <div class="semester-list">
+            {% for semester in student.semesters.order_by('semester_number') %}
+                <div class="semester-item">
+                    <div class="semester-header">
+                        <div>
+                            <div class="semester-title">{{ semester.name }}</div>
+                            <p style="color: #666; margin-top: 5px;">
+                                Semester {{ semester.semester_number }}
+                                {% if semester.year %} | Year: {{ semester.year }}{% endif %}
+                            </p>
+                        </div>
+                        <div class="semester-gpa">GPA: {{ "%.2f"|format(semester.gpa) }}</div>
+                    </div>
+
+                    <p><strong>Total Credits:</strong> {{ "%.1f"|format(semester.total_credits) }}</p>
+                    <p><strong>Courses:</strong> {{ semester.courses.count() }}</p>
+
+                    <div style="margin-top: 15px;">
+                        <a href="{{ url_for('main.view_semester', id=semester.id) }}" class="btn btn-primary">View Courses</a>
+                        <a href="{{ url_for('main.edit_semester', id=semester.id) }}" class="btn btn-secondary">Edit</a>
+                        <form method="POST" action="{{ url_for('main.delete_semester', id=semester.id) }}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this semester? All courses will be deleted too.');">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 40px; color: #666; background: #f8f9fa; border-radius: 10px;">
+            <h3>No semesters yet</h3>
+            <p>Click "Add Semester" to start tracking courses!</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - CGPA Calculator{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ title }}</h1>
+    <p class="subtitle">{{ student.name }} ({{ student.student_id }})</p>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            {{ form.name.label }}
+            {{ form.name(class="form-control", placeholder="e.g., Fall 2024, Semester 1") }}
+            {% if form.name.errors %}
+                <div class="form-error">{{ form.name.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.semester_number.label }}
+            {{ form.semester_number(class="form-control", placeholder="1, 2, 3, etc.") }}
+            {% if form.semester_number.errors %}
+                <div class="form-error">{{ form.semester_number.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.year.label }}
+            {{ form.year(class="form-control", placeholder="e.g., 2024") }}
+            {% if form.year.errors %}
+                <div class="form-error">{{ form.year.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.start_date.label }}
+            {{ form.start_date(class="form-control") }}
+            {% if form.start_date.errors %}
+                <div class="form-error">{{ form.start_date.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.end_date.label }}
+            {{ form.end_date(class="form-control") }}
+            {% if form.end_date.errors %}
+                <div class="form-error">{{ form.end_date.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary btn-block") }}
+            <a href="{{ url_for('main.view_student', id=student.id) }}" class="btn btn-secondary btn-block" style="margin-top: 10px;">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

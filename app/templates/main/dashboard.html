@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - CGPA Calculator{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>My Students</h1>
+    <p class="subtitle">Manage your student records and track CGPA</p>
+
+    <div style="margin-bottom: 20px;">
+        <a href="{{ url_for('main.create_student') }}" class="btn btn-success">+ Add New Student</a>
+    </div>
+
+    {% if students %}
+        <div class="student-grid">
+            {% for student in students %}
+                <div class="student-card">
+                    <h3>{{ student.name }}</h3>
+                    <p><strong>ID:</strong> {{ student.student_id }}</p>
+                    {% if student.program %}
+                        <p><strong>Program:</strong> {{ student.program }}</p>
+                    {% endif %}
+                    {% if student.year %}
+                        <p><strong>Year:</strong> {{ student.year }}</p>
+                    {% endif %}
+                    <div class="cgpa">CGPA: {{ "%.2f"|format(student.overall_cgpa) }}</div>
+                    <div style="margin-top: 15px;">
+                        <a href="{{ url_for('main.view_student', id=student.id) }}" class="btn btn-primary">View Details</a>
+                        <a href="{{ url_for('main.edit_student', id=student.id) }}" class="btn btn-secondary">Edit</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 40px; color: #666;">
+            <h3>No students yet</h3>
+            <p>Click "Add New Student" to get started!</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
