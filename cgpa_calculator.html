@@ -75,7 +75,7 @@
 
         .course-row {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr auto;
+            grid-template-columns: 2fr 1.5fr 1fr 1fr auto;
             gap: 10px;
             margin-bottom: 10px;
             align-items: end;
@@ -93,7 +93,7 @@
             font-weight: 500;
         }
 
-        input {
+        input, select {
             padding: 10px;
             border: 2px solid #e0e0e0;
             border-radius: 5px;
@@ -101,9 +101,14 @@
             transition: border-color 0.3s;
         }
 
-        input:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: #667eea;
+        }
+
+        select {
+            cursor: pointer;
+            background: white;
         }
 
         button {
@@ -295,6 +300,22 @@
                         <input type="text" class="course-name" placeholder="e.g., Data Structures" value="Data Structures">
                     </div>
                     <div class="input-group">
+                        <label>Subject Area</label>
+                        <select class="course-subject">
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="Biology">Biology</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Mechanical">Mechanical</option>
+                            <option value="Civil">Civil</option>
+                            <option value="Humanities">Humanities</option>
+                            <option value="Business">Business</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
                         <label>Credits</label>
                         <input type="number" class="course-credits" placeholder="0" min="0" step="0.5" value="4">
                     </div>
@@ -330,6 +351,7 @@
                 <thead>
                     <tr>
                         <th>Course</th>
+                        <th>Subject Area</th>
                         <th>Credits</th>
                         <th>Marks</th>
                         <th>Grade Point</th>
@@ -363,6 +385,22 @@
                     <input type="text" class="course-name" placeholder="e.g., Database Systems">
                 </div>
                 <div class="input-group">
+                    <label>Subject Area</label>
+                    <select class="course-subject">
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Mathematics">Mathematics</option>
+                        <option value="Physics">Physics</option>
+                        <option value="Chemistry">Chemistry</option>
+                        <option value="Biology">Biology</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Mechanical">Mechanical</option>
+                        <option value="Civil">Civil</option>
+                        <option value="Humanities">Humanities</option>
+                        <option value="Business">Business</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="input-group">
                     <label>Credits</label>
                     <input type="number" class="course-credits" placeholder="0" min="0" step="0.5">
                 </div>
@@ -394,12 +432,13 @@
 
             courseRows.forEach(row => {
                 const name = row.querySelector('.course-name').value.trim();
+                const subject = row.querySelector('.course-subject').value;
                 const credits = parseFloat(row.querySelector('.course-credits').value);
                 const marks = parseFloat(row.querySelector('.course-marks').value);
 
                 if (name && !isNaN(credits) && !isNaN(marks) && credits > 0 && marks >= 0 && marks <= 100) {
                     const gradePoint = marksToGradePoint(marks);
-                    courses.push({ name, credits, marks, gradePoint });
+                    courses.push({ name, subject, credits, marks, gradePoint });
                     totalCredits += credits;
                     weightedGradePoints += (gradePoint * credits);
                 } else if (name || credits || marks) {
@@ -431,6 +470,7 @@
                 const row = tbody.insertRow();
                 row.innerHTML = `
                     <td>${course.name}</td>
+                    <td>${course.subject}</td>
                     <td>${course.credits.toFixed(1)}</td>
                     <td>${course.marks.toFixed(1)}</td>
                     <td>${course.gradePoint.toFixed(1)}</td>
@@ -448,6 +488,22 @@
                     <div class="input-group">
                         <label>Course Name</label>
                         <input type="text" class="course-name" placeholder="e.g., Data Structures">
+                    </div>
+                    <div class="input-group">
+                        <label>Subject Area</label>
+                        <select class="course-subject">
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="Biology">Biology</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Mechanical">Mechanical</option>
+                            <option value="Civil">Civil</option>
+                            <option value="Humanities">Humanities</option>
+                            <option value="Business">Business</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </div>
                     <div class="input-group">
                         <label>Credits</label>

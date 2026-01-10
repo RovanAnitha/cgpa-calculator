@@ -30,12 +30,13 @@ def calculate_cgpa(csv_file):
         with open(csv_file, 'r') as file:
             reader = csv.DictReader(file)
 
-            print("\n" + "="*70)
-            print(f"{'Course Name':<30} {'Credits':<10} {'Marks':<10} {'Grade Point':<10}")
-            print("="*70)
+            print("\n" + "="*90)
+            print(f"{'Course Name':<30} {'Subject Area':<20} {'Credits':<10} {'Marks':<10} {'Grade Point':<10}")
+            print("="*90)
 
             for row in reader:
                 course_name = row['Course Name']
+                subject_area = row.get('Subject Area', 'N/A')
                 credits = float(row['Credits'])
                 marks = float(row['Marks'])
 
@@ -43,6 +44,7 @@ def calculate_cgpa(csv_file):
 
                 courses.append({
                     'name': course_name,
+                    'subject': subject_area,
                     'credits': credits,
                     'marks': marks,
                     'grade_point': grade_point
@@ -51,15 +53,15 @@ def calculate_cgpa(csv_file):
                 total_credits += credits
                 weighted_grade_points += (grade_point * credits)
 
-                print(f"{course_name:<30} {credits:<10.1f} {marks:<10.1f} {grade_point:<10.1f}")
+                print(f"{course_name:<30} {subject_area:<20} {credits:<10.1f} {marks:<10.1f} {grade_point:<10.1f}")
 
-            print("="*70)
+            print("="*90)
 
             if total_credits > 0:
                 cgpa = weighted_grade_points / total_credits
                 print(f"\nTotal Credits: {total_credits:.1f}")
                 print(f"CGPA: {cgpa:.2f}")
-                print("="*70 + "\n")
+                print("="*90 + "\n")
                 return cgpa
             else:
                 print("\nError: No courses found or total credits is zero.")
@@ -67,11 +69,11 @@ def calculate_cgpa(csv_file):
 
     except FileNotFoundError:
         print(f"\nError: File '{csv_file}' not found.")
-        print("Please create a CSV file with columns: Course Name, Credits, Marks")
+        print("Please create a CSV file with columns: Course Name, Subject Area, Credits, Marks")
         return None
     except KeyError as e:
         print(f"\nError: Missing required column {e} in CSV file.")
-        print("CSV file must have columns: Course Name, Credits, Marks")
+        print("CSV file must have columns: Course Name, Subject Area (optional), Credits, Marks")
         return None
     except ValueError as e:
         print(f"\nError: Invalid data in CSV file - {e}")
